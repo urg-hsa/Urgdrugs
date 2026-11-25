@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Drogas de abuso en Urgencias</title>
+<style>
+:root{--bg:#f4f5f7;--card:#fff;--tx:#14181f;--mut:#5b6472;--ln:#d9dde3;--ok:#0b7a3e;--okbg:#dff4e6;--no:#4b5563;--nobg:#e5e7eb;--red:#b4121b;--redbg:#fde4e4;--amb:#8a5a00;--ambbg:#fff0c9;--plan:#0b3d91;--planbg:#e3ecff;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);color-scheme:light}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#10141a;--card:#1a2029;--tx:#eef1f5;--mut:#9aa5b4;--ln:#2d3744;--ok:#6fe0a0;--okbg:#10331f;--no:#c5ccd6;--nobg:#2a323d;--red:#ff9a9f;--redbg:#3d1519;--amb:#ffd37a;--ambbg:#3a2c0a;--plan:#9ec0ff;--planbg:#13294f;color-scheme:dark}}
+*{box-sizing:border-box}html{scroll-padding-top:120px}
+body{margin:0;background:var(--bg);color:var(--tx);font:16px/1.45 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);background:var(--bg);z-index:10}
+header{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--bg);padding:10px 12px 8px;border-bottom:1px solid var(--ln)}
+h1{font-size:17px;margin:0 0 8px}
+input{width:100%;font:inherit;padding:11px 12px;border:1.5px solid var(--ln);border-radius:10px;background:var(--card);color:var(--tx)}
+main{max-width:720px;margin:0 auto;padding:12px}
+.legend{display:flex;gap:6px;flex-wrap:wrap;font-size:13px;margin-bottom:10px}
+.pill{display:inline-block;font-weight:700;border-radius:999px;padding:3px 10px;font-size:13px}
+.ok{background:var(--okbg);color:var(--ok)}.no{background:var(--nobg);color:var(--no)}
+.grp{font-size:13px;color:var(--mut);margin:14px 2px 6px;font-weight:600}
+.card{display:block;width:100%;text-align:left;background:var(--card);color:inherit;border:1px solid var(--ln);border-left:6px solid var(--no);border-radius:10px;padding:10px 12px;margin-bottom:8px;font:inherit;cursor:pointer}
+.card.ok{border-left-color:var(--ok)}
+.card:focus-visible,button:focus-visible,summary:focus-visible,.wbox:focus-visible{outline:3px solid var(--plan);outline-offset:2px}
+.card b{font-size:17px}.card .row{display:flex;justify-content:space-between;gap:8px;align-items:center}
+.card .d{font-size:14px;color:var(--mut);margin-top:3px}
+.back{background:none;border:0;color:var(--plan);font:inherit;font-weight:700;padding:8px 0;cursor:pointer}
+.hd{display:flex;justify-content:space-between;align-items:flex-start;gap:8px}
+.ttl{min-width:0}
+.ttl h2{margin:0;font-size:24px}.alias{color:var(--mut);font-size:14px;margin:2px 0 8px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.tools{display:flex;align-items:center;gap:6px;flex-shrink:0}
+.wbox{touch-action:none;user-select:none;-webkit-user-select:none;border:1.5px solid var(--ln);border-radius:10px;background:var(--card);padding:5px 10px;text-align:center;cursor:ns-resize;min-width:84px}
+.wbox .wl{display:block;font-size:11px;color:var(--mut)}
+.wbox .wv{font-size:20px;font-weight:700}
+.pbtn{border:1.5px solid var(--plan);background:var(--planbg);color:var(--plan);border-radius:10px;padding:8px;cursor:pointer;line-height:0}
+.antrow{margin:8px 0 0}
+.aviso-c{text-align:center;color:var(--red);background:var(--redbg);border:2px solid var(--red);font-weight:700;border-radius:10px;padding:8px 10px;margin:8px 0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-size:clamp(12px,3.9vw,16px)}
+.wc{color:var(--red);font-weight:700}
+.box{border-radius:10px;padding:10px 12px;margin:10px 0}
+.box h3{margin:0 0 4px;font-size:14px}
+.box ul{margin:0;padding-left:18px}.box li{margin:2px 0}
+.box p{margin:0}
+.anti{background:var(--okbg);border:2px solid var(--ok)}.anti.none{background:var(--nobg);border-color:var(--no)}
+.plan{background:var(--planbg);border:2px solid var(--plan)}.plan h3{color:var(--plan)}
+.kill{background:var(--redbg);border:2px solid var(--red)}.kill h3{color:var(--red)}
+.nono{background:var(--redbg);border:2px dashed var(--red)}.nono h3{color:var(--red)}
+.warn{background:var(--ambbg);border:2px solid var(--amb)}.warn h3{color:var(--amb)}
+.first{background:var(--card);border:2px solid var(--plan)}
+.first h3{color:var(--plan);font-size:16px;margin-bottom:6px}
+.first .via{font-size:14px;color:var(--mut);margin:0 0 6px}
+.plain{background:var(--card);border:1px solid var(--ln)}
+ol{margin:0;padding-left:22px}ol li{margin:5px 0}
+.dose{border-top:1px solid var(--ln);padding:6px 0;font-size:15px}.dose:first-child{border-top:0}
+details{background:var(--card);border:1px solid var(--ln);border-radius:10px;margin:10px 0;padding:0 12px}
+summary{cursor:pointer;padding:12px 0;font-weight:700}details>div{padding-bottom:10px}
+.src{font-size:12px;color:var(--mut);margin:12px 0 10px}
+.credit{font-size:12px;color:var(--mut);border-top:1px solid var(--ln);margin-top:18px;padding:12px 0 36px;line-height:1.5}
+</style>
+</head>
+<body>
+<header><h1>Drogas de abuso en Urgencias</h1><input id="q" type="search" placeholder="Buscar: cocaína, opioide, tripi, antídoto…" aria-label="Buscar"></header>
+<main id="app"></main>
+<script>
+var W=70;
+var D=[
+{id:"naloxona_box",g:"Bloques comunes",n:"Naloxona en el box",al:"Bloque común de opioides: algoritmo por ramas, perfusión y observación",a:"NALOXONA",ad:"Diana: FR > 10/min y SatO₂ > 92 % con aire (88-92 % si enfermedad respiratoria previa); revertir, no despertar del todo.",
+dest:"Observación ≥ 4 h tras la última naloxona y ≥ 6 h tras el consumo (hasta 12 h si metadona u opioide NPS). UCI si recaída clínica o dosis acumuladas altas.",
+via:"Intravenosa (de elección); IM si no hay vía; IN o IO solo si el acceso IV es difícil",lleg:["Diana: FR > 10 y SatO₂ > 92 % con aire (verde)","Naranja: FR 6-10 o SatO₂ 86-92 % con aire","Roja: parada o periparada respiratoria (FR ≤ 5, SatO₂ < 85 % con aire)"],
+st:["Verde: no hace falta naloxona; monitorización y vía IV; FR, SatO₂, EtCO₂ y AVPU cada 30 min","Naranja: bolos IV de 100-200 µg cada 60 s hasta un máximo de 2000 µg; objetivo FR > 10; los cuatro primeros, de 100 µg, después de 200 µg","Roja: avisar a un sénior; bolsa-mascarilla con O₂ 15 L/min, 10-12 rpm; vía IV/IO; 400 µg IV (IO/IM si no hay vía), luego 800 µg, 800 µg y 2000 µg cada 60 s","Valorar vía aérea avanzada y derivación urgente a Críticos","Alta a plantear si siguen normales 6 h tras la hora supuesta de la sobredosis"],
+kill:["Reversión rápida: edema pulmonar, HTA, arritmias, parada","Abstinencia precipitada: bostezos, rinorrea, lagrimeo, pupilas dilatadas, taquicardia","Renarcotización cuando se va el efecto de la naloxona"],no:["IM «de depósito» para adelantar el alta, ni IM junto con la IV","Retrasar la RCP o el aviso mientras se da o se espera la naloxona","Naloxona de entrada en dosis grandes en mezclas de estimulante"],
+av:"Naloxona nasal: 1,8 mg por pulverización (la dosis de la AHA de 2-4 mg IN corresponde a un dispositivo no autorizado en España). Nalmefeno no sustituye a la naloxona.",
+dos:[["Preparación de bolos","Ampolla 1 mL = 0,4 mg (400 µg, 0,4 mg/mL). Jeringa de 10 mL: completar con SSF 0,9 % hasta 10 mL = 40 µg/mL. 100 µg = 2,5 mL; 200 µg = 5 mL. Rama roja: ampollas sin diluir (400 µg/mL): 1 → 2 → 2 → 5 ampollas."],["Perfusión (60 %/h de los bolos)","Preparar 10 ampollas (4 mg = 10 mL) + 30 mL de SSF 0,9 % = 40 mL a 100 µg/mL. Bomba IV. mL/h = (bolos totales en µg × 0,6) / 100. Ej.: 1200 µg de bolos → 720 µg/h = 7,2 mL/h. Retirada: mismo ritmo ≥ 4 h, luego −25 % cada 2 h; no parar de 00:00 a 06:00."]],
+src:"RCEM/NPIS 2024 (Fig. 1 y Tabla 2) · AHA 2025 · ERC 2025 · CIMA 69533 · CIMA 1171238001 · Murillo c.143 · Saari 2024 · ACMT/AACT 2023 · Bless 2025"},
+
+{id:"sedar",g:"Bloques comunes",n:"Sedar al agitado",al:"Benzodiacepina primero. Alternativas en Críticos (ketamina IM o droperidol)",a:"BENZODIACEPINA PRIMERO",ad:"AHA 2025: sedantes (benzodiacepinas, antipsicóticos), COR 1. La benzodiacepina además relaja y trata las crisis. Desescalada verbal siempre.",
+dest:"Sin respuesta a dosis completas: Críticos. Si fallan las primeras dosis completas: considerar UCI.",
+via:"IM o IV",lleg:["Agitación con taquicardia, HTA, hipertermia o convulsiones","Si no colabora: sedar IM y luego canalizar"],
+st:["Desescalada verbal siempre; fármaco oral si es seguro; mínimos estímulos","Descartar hipoglucemia e hipoxemia antes de la benzodiacepina","Monitor ECG, SpO₂, PA y EtCO₂; O₂, aspirador y bolsa-mascarilla; médico con experiencia en críticos","Midazolam 5-10 mg IM o 2-4 mg IV cada 15 min, titulado (fuera de ficha en IM)","Sin respuesta a dosis completas: Críticos; allí, ketamina o droperidol (primera línea del RCEM en agitación grave)","Temperatura > 40 °C: inmersión en agua helada (AHA COR 1)"],
+kill:["Hipoventilación tras bolos IV rápidos; diazepam IV rápida → apnea","Arritmias con droperidol o haloperidol con QT largo","Hipertermia > 40 °C: agua helada (AHA COR 1)"],no:["Contención física prolongada sin sedación (AHA COR 3: Harm)","Olanzapina IV o simultánea con benzodiacepina parenteral","Flumazenilo en intoxicación por anfetaminas o con riesgo de convulsiones","Suxametonio"],
+av:"Dos midazolam en el carro: 1 mg/mL y 5 mg/mL; rotular siempre mg/mL. Descartar hipoglucemia e hipoxemia antes de la benzodiacepina.",
+dos:[["Midazolam","IM 5-10 mg (1-2 mL de 5 mg/mL). IV 2-4 mg cada 15 min (0,4-0,8 mL de 5 mg/mL). Máx. total 28 mg según Murillo."],["Diazepam","IM o IV 2-10 mg; IV muy lenta (0,5-1 mL/min) en vena gruesa. Repetir a las 3-4 h. Ampolla 10 mg/2 mL."],["Ketamina IM (fuera de ficha)","50 mg/mL: 4 mg/kg IM (mL = mg / 50). Repartir si el volumen es grande. No si QTc > 450 ms (mujer) o > 440 ms (hombre), hipopotasemia, bradicardia < 55 lpm, coma o Parkinson. Solo con equipo de vía aérea."],["Droperidol (fuera de ficha en IM)","2,5 mg/mL. 5-10 mg IM = 2-4 mL. Ficha: solo IV lenta. Ancianos: mitad de dosis, máx. 5 mg/día. No con QTc largo, hipopotasemia no corregida, coma o Parkinson. ECG basal."],["Olanzapina IM (fuera de ficha)","Vial 10 mg polvo + 2,1 mL de agua → 5 mg/mL. 10 mg = 2 mL, usar en 1 h. Ficha: 2.ª dosis 5-10 mg a las 2 h; máx. 20 mg/día. No a la vez que BZD parenteral: BZD ≥ 1 h después."],["Haloperidol IM (fuera de ficha)","Ampolla 5 mg/mL. 5 mg, repetible cada hora; máx. 20 mg/día (agitación psicótica). Ancianos: máx. 5 mg/día. No IV ni SC. Corregir K y Mg."]],
+src:"AHA 2025 · RCEM 2025 · ACEP 2024 · Bless 2025 · Jiménez Murillo c.131/138/148/150 · Harrison 22.a · Farreras 20.a · CIMA 63936, 65796, 89559, 47034, 82997, 96022016, 58345"},
+
+{id:"cocaina",g:"Estimulantes",n:"Cocaína y crack",al:"«nieve», «coca», «perico», «farlopa». El «crack» es cocaína base",a:"NO HAY",ad:"Benzodiacepina; enfriar; bicarbonato si complejo ancho. Fuera de ficha: bicarbonato sódico 1 M en complejo ancho y nitroglicerina IV en vasoespasmo o emergencia hipertensiva",
+dest:"Dolor torácico en joven: descartar SCA por vasoespasmo (nitroglicerina; nunca betabloqueantes). Body-packer con clínica: cirugía. Tiempo de observación: no consta en la ficha.",
+via:"Esnifada, fumada (crack) o inyectada",lleg:["Taquicardia, HTA, hipertermia, agitación, convulsiones","Midriasis, sudoración; ACV con 20-40 años","Dolor torácico: sospechar isquemia aunque sea joven"],
+st:["Benzodiacepina: midazolam 5-10 mg IM o 2-4 mg IV cada 15 min, titulado","T central ≥ 40 °C: agua helada 1-5 °C, parar a 38,6 °C","Complejo ancho o parada: bicarbonato 1 M, bolo 50-150 mL (1 mEq/mL)","Lidocaína 2 % (20 mg/mL): 50-100 mg = 2,5-5 mL; máx. 200-300 mg en 1 h","Nitroglicerina 100 µg/mL a 6-12 mL/h (no con PDE-5); body-packer con clínica: cirugía"],
+kill:["Hipertermia > 40 °C: puede ser rápidamente mortal","SCA por vasoespasmo","QRS ancho, TV y parada"],no:["Betabloqueantes en fase aguda","Contención sin sedación","Succinilcolina, antitérmicos, fenitoína"],
+av:"Dolor torácico en un joven: sospechar isquemia aunque no tenga factores de riesgo.",
+dos:[["Bicarbonato sódico 1 M (fuera de ficha)","Ampolla 10 mL = 840 mg = 10 mEq. Bolo 50-150 mEq = 50-150 mL = 5-15 ampollas. En parada, IV rápida directa; si no, inyección lenta o diluido. Topes: pH ≤ 7,55 y Na ≤ 155 mEq/L. Máximo adulto en ficha: no consta."],["Lidocaína 2 %","Ampolla 20 mg/mL. Bolo 50-100 mg = 2,5-5 mL (o 1-1,5 mg/kg); repetir 0,5-0,75 mg/kg a los 5-10 min. Máx. 200-300 mg en 1 h."],["Nitroglicerina (fuera de ficha)","Ampolla 10 mL = 50 mg (5 mg/mL). Diluir 1 ampolla en 500 mL de G5 % o SSF = 100 µg/mL, en vidrio. Inicio 6-12 mL/h; sin dilución, nunca en bolo."]],
+src:"AHA 2025 · ERC 2025 · Jiménez Murillo c.138 · Bless 2025 · Energy Control 2025 · CIMA 60324, 57127, 44792"},
+
+{id:"anfetamina",g:"Estimulantes",n:"Anfetamina y metanfetamina",al:"«speed» (anfetamina), «metanfetamina cristal» (EE. UU.). Oral, fumadas o nasal",a:"NO HAY",ad:"Sedar, enfriar y tratar las complicaciones. Fuera de ficha: nitroglicerina en dolor torácico.",
+dest:"Sintomático a observación; grave: UCI. Rabdomiólisis: vigilar fracaso renal. Tiempo de observación: no consta en la ficha.",
+via:"Oral, fumadas o por inhalación nasal; pastillas, polvo o cristales",lleg:["Taquicardia, HTA, agitación, hipertermia, convulsiones","De fiesta: midriasis, hipertonía, conciencia alterada","Dolor torácico: IAM por vasoespasmo en coronarias normales"],
+st:["Benzodiacepina primero (bloque de sedación); puede necesitar más dosis","T central ≥ 40 °C: agua helada 1-5 °C, parar a 38,6 °C","Convulsiones: midazolam 10 mg IM (2 mL de 5 mg/mL) o diazepam 0,15-0,25 mg/kg IV","Dolor torácico: nitroglicerina 100 µg/mL a 6-12 mL/h, en vidrio","Rabdomiólisis: sueros IV e iones; sintomático a observación (grave: UCI)"],
+kill:["Hipertermia grave y rápidamente mortal (no es infección)","Parada en FV, TV o AESP; IAM por vasoespasmo; takotsubo","Rabdomiólisis → fracaso renal → fallo multiorgánico; CID"],no:["Betabloqueantes en fase aguda","Contención sin sedación (AHA COR 3: Harm)","Succinilcolina; acidificar la orina"],
+av:"Hipertermia: grave y rápidamente mortal; no es infección.",
+dos:[["Midazolam (fuera de ficha)","Ampolla 5 mg/mL. Sin vía: 10 mg IM = 2 mL, sin esperar. Con vía: diazepam IV muy lenta (0,5-1 mL/min; ampolla 5 mg/mL); repetir a los 10-15 min. Si no cede: protocolo de estatus del centro."],["Nitroglicerina (fuera de ficha)","Ampolla 10 mL = 50 mg (5 mg/mL), concentrada: nunca sin diluir ni en bolo. Diluir 1 ampolla en 500 mL G5 % o SSF (retirar antes 10 mL) = 100 µg/mL, en vidrio. Inicio 10-20 µg/min = 6-12 mL/h; habitual 50-100 µg/min = 30-60 mL/h."]],
+src:"AHA 2025 · ERC 2025 · Jiménez Murillo c.131 · Bless 2025 · RCEM 2025 · CIMA 57127, 63936, 65796"},
+
+{id:"mdma",g:"Estimulantes",n:"MDMA",al:"«éxtasis», «Molly», «tacha», «X». Oral: tableta, cápsula o líquido",a:"NO HAY",ad:"Ciproheptadina solo si síndrome serotoninérgico confirmado (fuera de ficha). Nitroglicerina en dolor torácico (fuera de ficha).",
+dest:"Gasometría con sodio desde el inicio. Hiponatremia grave: NaCl 3 % según protocolo del centro. Tiempo de observación: no consta en la ficha.",
+via:"Oral: tableta, cápsula o líquido",lleg:["Hipertermia (hasta 43 °C) y agitación","Hiponatremia: cefalea, vómitos, confusión, convulsiones","Palpitaciones, dolor precordial, bruxismo"],
+st:["Na en gasometría; hiponatremia grave: NaCl 3 % según protocolo del centro","Benzodiacepina primero (bloque de sedación)","T central ≥ 40 °C: agua helada 1-5 °C, parar a 38,6 °C","Convulsiones: midazolam 10 mg IM (2 mL de 5 mg/mL) o diazepam 0,15-0,25 mg/kg IV","Serotoninérgico confirmado: ciproheptadina 12 mg VO, luego 2 mg cada 2 h; máx. 32 mg/24 h"],
+kill:["Hiponatremia → convulsiones, coma, edema cerebral y muerte","Hipertermia","Edema pulmonar no cardiogénico"],no:["No poner sueros sin conocer el sodio","Ondansetrón ni vaptanes","Betabloqueantes ni succinilcolina"],
+av:"Convulsiones en MDMA: pensar en hiponatremia. El cristal vendido como MDMA puede llevar 4-CMC o metanfetamina.",
+dos:[["Midazolam (fuera de ficha)","Ampolla 5 mg/mL. Sin vía: 10 mg IM = 2 mL. Con vía: diazepam IV muy lenta (0,5-1 mL/min; ampolla 5 mg/mL); repetir a los 10-15 min. Si no cede: protocolo de estatus."],["Ciproheptadina (fuera de ficha)","Comprimido 4 mg. 12 mg VO = 3 comprimidos; luego 2 mg = ½ comprimido cada 2 h. Máx. 32 mg/24 h."]],
+src:"AHA 2025 · ERC 2025 · Jiménez Murillo c.131 y c.84 · Bless 2025 · Garcia 2026 · RCEM 2025 · CIMA 35622, 57127, 63936, 65796"},
+
+{id:"catinonas",g:"Estimulantes",n:"Catinonas",al:"«flakka» (a-PVP), mefedrona (4-MMC), 3-MMC, 3-CMC, 2-MMC, MDPV. A menudo tomadas sin saberlo",a:"NO HAY",ad:"Sin guía oficial. Soporte del toxíndrome simpaticomimético. Fuera de ficha: nitroglicerina en vasoespasmo.",
+dest:"Fracaso renal: UCI y hemodiálisis. Agitación con psicosis: riesgo de parada respiratoria. Tiempo de observación: no consta en la ficha.",
+via:"A menudo tomadas sin saberlo, como adulterante o sustituto",lleg:["Agitación extrema, psicosis paranoide, agresividad","Taquicardia, HTA, hipertermia, convulsiones","Puede creer que tomó MDMA o ketamina"],
+st:["Benzodiacepina primero; puede necesitar más dosis y sedación larga","T central ≥ 40 °C: agua helada 1-5 °C, parar a 38,6 °C","Convulsiones: midazolam 10 mg IM (2 mL de 5 mg/mL) o diazepam 0,15-0,25 mg/kg IV","Vasoespasmo: nitroglicerina 100 µg/mL a 6-12 mL/h (no con PDE-5)","Rabdomiólisis: sueros IV e iones; fracaso renal: UCI y hemodiálisis"],
+kill:["Hipertermia, que puede ser maligna","Arritmias y parada (FV, TV, AESP)","Agitación con psicosis: parada respiratoria"],no:["Contención sin sedación (AHA COR 3: Harm)","Succinilcolina ni betabloqueantes","Fiarse de un cribado de orina negativo"],
+av:"Cribado de orina negativo no descarta: el habitual no las detecta.",
+dos:[["Midazolam (fuera de ficha)","Ampolla 5 mg/mL. Sin vía: 10 mg IM = 2 mL. Con vía: diazepam IV muy lenta (0,5-1 mL/min; ampolla 5 mg/mL); repetir a los 10-15 min. Si no cede: protocolo de estatus."],["Nitroglicerina (fuera de ficha)","Ampolla 50 mg (5 mg/mL), nunca sin diluir ni en bolo. 1 ampolla en 500 mL G5 % o SSF = 100 µg/mL, en vidrio. Inicio 6-12 mL/h; habitual 30-60 mL/h; subir 10-20 µg/min cada 5-10 min."]],
+src:"AHA 2025 · Bless 2025 · RCEM 2025 · alerta SEAT 16/09/2025 · Comunidad de Madrid · Energy Control 2026 · CIMA 57127, 63936, 65796"},
+
+{id:"estfent",g:"Adulterantes y alertas",n:"Estimulante con fentanilo",al:"Estimulante en polvo con fentanilo que el consumidor no espera. No detectado en España",a:"NALOXONA",ad:"Bolos IV de 100 µg cada 60 s: revertir la respiración, no despertar del todo. Sin guía oficial para el cuadro mixto: naloxona por las guías de opioides.",
+dest:"Observación según la pauta de opioides: ≥ 4 h tras la última naloxona y ≥ 6 h tras el consumo; 12 h si NPS. Vigilar renarcotización. Al revertir, buscar y tratar el estimulante.",
+via:"Estimulante en polvo con fentanilo",lleg:["Somnolencia, FR baja y miosis","Refiere solo cocaína: la miosis puede faltar","Rigidez de la pared torácica"],
+st:["Ventilar con bolsa-mascarilla y O₂ (15 L/min, 10-12 rpm en parada). No retrasar la RCP por la naloxona","Parada o periparada (FR ≤ 5, SatO₂ < 85 %): 400 → 800 → 800 → 2000 µg cada 60 s","Si no: 100 µg (2,5 mL de 40 µg/mL) cada 60 s; tras 4, 200 µg; hasta 2000 µg","Si vuelve a deprimirse: nuevos bolos y perfusión","Parada cardiaca: naloxona solo si no interrumpe la RCP de calidad"],
+kill:["Depresión respiratoria → parada respiratoria → parada cardiaca","Sedantes no opioides asociados, que no responden a la naloxona"],no:["Dosis grandes de naloxona de entrada","Naloxona IM junto a la IV","Esperar al cribado de orina"],
+av:"El estimulante puede tapar el cuadro opioide: la miosis puede faltar. Al revertir, buscar y tratar el estimulante.",
+dos:[],
+src:"Sin guía oficial para el cuadro mixto: naloxona por las guías de opioides (AHA 2025, RCEM/NPIS 2024)"},
+
+{id:"xilacina",g:"Adulterantes y alertas",n:"Xilacina y medetomidina",al:"Sedantes a2-agonistas. La medetomidina es 200 veces más potente (alerta SEAT 07/11/2025). Casi siempre con opioides; no detectadas en España",a:"NO HAY",ad:"La naloxona no revierte la parte a2, pero se da si hay opioide. Sin guía oficial. Fuera de ficha: clonidina y dexmedetomidina para la abstinencia si es necesario.",
+dest:"Sedación prolongada: monitorización continua. Abstinencia grave de medetomidina: UCI (77,5 % de UCI y 20,1 % de intubación en una serie de 209 casos).",
+via:"No consta en la ficha; casi siempre con opioides",lleg:["Sedación que no se levanta con la naloxona","Bradicardia marcada (hasta 32 lpm) e hipotensión","Hiperglucemia y QT largo (xilacina); hasta 32 h de efecto"],
+st:["Soporte: vía aérea, oxígeno, bolsa-mascarilla; intubación y ventilación mecánica si hace falta","Naloxona titulada como en cualquier sobredosis de opioide (bloque común)","No seguir subiendo la naloxona; sostener la ventilación y monitorizar","Fluidos IV y monitorización continua","Bradicardia sintomática: atropina","Abstinencia: tratar la abstinencia opioide; clonidina o dexmedetomidina si es necesario"],
+kill:["Depresión respiratoria y del SNC sumada al opioide, que la naloxona no revierte en su parte a2","Bradicardia e hipotensión prolongadas","Abstinencia grave de medetomidina"],no:["Escalar la naloxona sin fin esperando revertir la sedación a2","No tratar la HTA de abstinencia solo con antihipertensivos: se controla tratando la abstinencia","No a2-antagonistas: pocos datos en humanos"],
+av:"Hoja de alerta: sin guía oficial y sin detección en España en las fuentes. Si no se levanta con la naloxona, pensar en a2.",
+dos:[],
+src:"Alerta SEAT 07/11/2025 · NYC HAN 2026 · Owusu-Antwi 2025 · London 2026 · Harrison c.467"},
+
+{id:"cocalev",g:"Adulterantes y alertas",n:"Cocaína con levamisol",al:"Antiparasitario veterinario; el adulterante más frecuente de la cocaína en España. Se metaboliza a aminorex",a:"NO HAY",ad:"Sin guía oficial. Tratar la intoxicación por cocaína como en su ficha.",
+dest:"No consta destino propio. Fiebre con agranulocitosis: protocolo de neutropenia febril del centro.",
+via:"Adulterante de la cocaína",lleg:["Efecto estimulante potenciado y prolongado (aminorex): clínica de la cocaína","Vasculitis cutánea con necrosis de la piel","Fiebre y agranulocitosis; leucoencefalopatía"],
+st:["Tratar la intoxicación por cocaína como en su ficha","Pedir hemograma para buscar agranulocitosis","Resto: la batería de la ficha de cocaína","Fiebre con agranulocitosis: protocolo de neutropenia febril del centro"],
+kill:["Agranulocitosis","Necrosis cutánea (vasculitis)","Leucoencefalopatía; alteraciones de la función inmunológica"],no:[],
+av:"Necrosis cutánea o agranulocitosis en quien consume cocaína: pensar en levamisol.",
+dos:[],
+src:"Harrison · Energy Control 2025 y 2026"},
+
+{id:"heroina",g:"Opioides",n:"Heroína y opioides clásicos",al:"En España, el 83 % de las muestras de heroína analizadas llevaba otras sustancias. Intravenosa o fumada",a:"NALOXONA",ad:"Titulada según el algoritmo; 0,4-0,8 mg parenterales suelen bastar (Saari 2024).",
+dest:"Observación ≥ 4 h tras la última naloxona y ≥ 6 h tras el consumo (hasta 12 h si metadona o NPS).",
+via:"Intravenosa o fumada (inhalación del humo)",lleg:["Somnolencia + FR baja + miosis puntiforme","Apnea máxima a los 7-15 min, con cianosis","Sin miosis: meperidina, anticolinérgicos o hipoxia"],
+st:["Ventilar y oxigenar: bolsa-mascarilla si FR ≤ 5; objetivo SatO₂ > 92 %","Naloxona titulada por ramas (bloque común); 0,4-0,8 mg suelen bastar","Convulsiones: naloxona (meperidina, tramadol: BZD); hipotensión: SSF y luego dopamina","Paquetes: carbón y PEG; cocaína con clínica: cirugía urgente, no endoscopia","Observación ≥ 4 h tras la última naloxona y ≥ 6 h tras el consumo"],
+kill:["Parada respiratoria y después cardiaca: la hipoxia es la causa primaria","Edema pulmonar no cardiogénico","Metadona: torsades; loperamida: QRS ancho y TV"],no:["Naloxona IM «de depósito» para adelantar el alta, ni IM junto con la IV","Provocar el vómito","Diuréticos, digitálicos ni nitratos en el edema pulmonar"],
+av:"En Europa, opioides NPS se venden a menudo como heroína sin que el consumidor lo sepa.",
+dos:[["Polietilenglicol (paquetes)","1 sobre (15 g) en 250 mL. Pasar cada 15-20 min, máx. 2 L/h. Repetir mínimo 3-4 h, hasta líquido rectal claro."]],
+src:"RCEM/NPIS 2024 · AHA 2025 · CIMA 69533 · Saari 2024 · Bless 2025 · Farreras c.325 · Murillo c.143 · Energy Control 2026"},
+
+{id:"fentanilo",g:"Opioides",n:"Fentanilo",al:"Opioide sintético. Sus análogos circulan sobre todo como adulterante o sustitutivo. No detectado en drogas analizadas en España",a:"NALOXONA",ad:"Mismas dosis tituladas que en heroína: no multiplicar la dosis inicial de naloxona.",
+dest:"Observación ≥ 4 h tras la última naloxona y ≥ 6 h tras el consumo; NPS hasta 12 h. Si recae: perfusión.",
+via:"Opioide sintético",lleg:["Somnolencia + FR baja + miosis","Rigidez torácica: no se deja ventilar"],
+st:["Ventilar y oxigenar; objetivo SatO₂ > 92 %","Naloxona a dosis habituales: 100-200 µg cada 60 s hasta 2 mg (rama naranja)","Rama roja: 400-800-800-2000 µg; rigidez: preparar vía aérea avanzada","Si recae: perfusión 60 %/h de los bolos; torsade: sulfato de magnesio 2 g IV en 1-2 min","≥ 4 h tras la última naloxona y ≥ 6 h tras el consumo; NPS hasta 12 h"],
+kill:["Parada respiratoria por hipoxia","Rigidez torácica con imposibilidad de ventilar","Edema pulmonar con SDRA, también tras la naloxona"],no:["Multiplicar la dosis inicial de naloxona","Fiarse del cribado de orina","Retrasar la RCP por la naloxona"],
+av:"Rigidez torácica: preparar vía aérea avanzada.",
+dos:[["Sulfato de magnesio (torsade)","Ampolla 150 mg/mL: 10 mL = 1,5 g. 2 g IV = 13,3 mL en 1-2 min. Repetir cada 5-15 min hasta 6 g, o perfusión 2-4 mg/min. Diluir en SSF 0,9 % (bolo o perfusión); G5 % solo en perfusión."]],
+src:"RCEM/NPIS 2024 · AHA 2025 · CIMA 69533 · Saari 2024 · ACMT/AACT 2023 · Nielsen 2025 · Bless 2025 · Energy Control 2025 · OEDA 2025 · CIMA 78350"},
+
+{id:"nitazenos",g:"Opioides",n:"Nitazenos",al:"Opioides nitazénicos de alta potencia: «tripi» (blotter), pastillas falsas. Alerta SEAT 2025: dos nuevos en España",a:"NALOXONA",ad:"Eficaz a dosis habituales tituladas; 400-800 µg IV/IM parecen eficaces. No se multiplica la dosis inicial.",
+dest:"Observación hasta 12 h (opioide NPS), además de ≥ 4 h tras la última naloxona y ≥ 6 h tras el consumo. UCI si recaída o dosis acumuladas altas. Monitorización continua toda la estancia.",
+via:"Un «tripi» o una pastilla falsa",lleg:["Tríada opioide tras un «tripi» o pastilla falsa","Apnea más larga: riesgo de renarcotización"],
+st:["Ventilar y oxigenar: sigue siendo crítico","Naloxona titulada a dosis habituales (bloque común)","Sospecha de mezcla con benzodiacepinas (comprimidos falsos): naloxona primero (AHA COR 2a)","Perfusión en cuanto haga falta un segundo juego de bolos (60 %/h de los bolos)","Sin respuesta tras la rama roja (último bolo 2000 µg): vía aérea avanzada y UCI"],
+kill:["Parada cardiorrespiratoria con cantidades muy pequeñas: un blotter puede intoxicar gravemente","Apnea prolongada y renarcotización al irse el efecto de la naloxona","Fallecimientos descritos a pesar de la naloxona"],no:["Multiplicar la dosis inicial de naloxona","Fiarse de tiras ni cribados negativos","Dar el alta con el horario corto"],
+av:"Blotter con aspecto de psicodélico o comprimido falso de farmacia: contenido opioide.",
+dos:[],
+src:"Alerta SEAT nitazenos (24/11/2025) · RCEM/NPIS 2024 · AHA 2025 · CIMA 69533 · Nielsen 2025 · OEDA 2025 · Bless 2025"},
+
+{id:"ghb",g:"Depresores",n:"GHB/GBL",al:"«Éxtasis líquido». GBL y 1,4-butanodiol se convierten en GHB en el hígado. Oral, solo o en bebidas",a:"NO HAY",ad:"Sin guía oficial. El pilar es el soporte respiratorio (Farreras c.325).",
+dest:"Observación de Urgencias, planta o intermedios según la vigilancia. Intento autolítico: observación continua.",
+via:"Oral: líquido, solo o mezclado con bebidas",lleg:["Coma brusco y fluctuante que revierte rápido","Bradicardia; a veces convulsiones o agresividad","Al despertar: desinhibición y amnesia"],
+st:["Vía aérea permeable y oxígeno si hay hipoxemia","Reevaluar sin estimular: la vía aérea puede mantenerse solo mientras se le estimula","Pulsioximetría continua o gasometría para valorar la ventilación","Intubar solo con criterio: apnea, FR > 35 o < 10 rpm, o Glasgow < 9","Hipotensión: volumen; si no responde, noradrenalina, adrenalina o dopamina","Abstinencia con agitación: sedar (bloque común); benzodiacepinas y baclofeno según protocolo del centro o centro de información toxicológica"],
+kill:["Mezcla con otros depresores: el alcohol potencia el efecto; depresión respiratoria","Hipotensión","Abstinencia: la temperatura central alta es el mejor predictor de mal pronóstico"],no:["No intubar «por si acaso»: el coma dura poco","No fiarse del reflejo nauseoso","Intubaciones innecesarias"],
+av:"Intoxicación (coma, bradicardia) y abstinencia (agitación, fiebre) son escenarios distintos.",
+dos:[],
+src:"Farreras c.325 · Harrison · Murillo c.130 · RCEM 2025"},
+
+{id:"benzos",g:"Depresores",n:"Benzodiacepinas de diseño",al:"Bromazolam, etizolam, desalquilgidazepam, flualprazolam, flubromazolam, clonazolam, meclonazepam, diclazepam. Pastillas que imitan diazepam o alprazolam pueden llevar nitazeno",a:"FLUMAZENILO",ad:"Solo en adulto seleccionado con intoxicación pura y sin contraindicaciones. Sin guía oficial propia: se aplica la AHA 2025 de benzodiacepinas.",
+dest:"Alta a las 6 h si sin complicaciones y sin ataxia (Murillo c.134). Pastillas que pueden llevar nitazeno: aplicar la pauta de opioides.",
+via:"Pastillas o comprimidos; mezcla con opioides o alcohol",lleg:["Depresión respiratoria por pérdida de reflejos","Mezcla con opioides o alcohol: más depresión","Pastillas falsas pueden llevar nitazeno"],
+st:["Vía aérea y ventilación: el flumazenilo no sustituye al soporte","Opioide + benzodiacepina: naloxona primero (AHA COR 2a)","Flumazenilo 0,1 mg/mL: 2 mL (0,2 mg) IV en 15 s","Si a los 60 s no despierta: 1 mL (0,1 mg) cada 60 s; máx. 10 mL (1 mg)","Abstinencia tras flumazenilo: diazepam o midazolam 5 mg IV lento","Alta a las 6 h si sin complicaciones y sin ataxia"],
+kill:["Depresión respiratoria, sobre todo en mezcla con opioides o alcohol"],no:["Flumazenilo en la parada","Flumazenilo con riesgo de convulsiones o arritmias","Flumazenilo en el coma sin causa aclarada"],
+av:"Pastillas falsas pueden llevar nitazeno: naloxona primero si hay depresión respiratoria.",
+dos:[["Flumazenilo","Ampollas 0,5 mg/5 mL o 1 mg/10 mL, ambas a 0,1 mg/mL. 2 mL = 0,2 mg IV en 15 s, sin diluir o en glucosa 5 %, Ringer lactato o salino. Máx. 1 mg = 10 mL (AHA 2025)."]],
+src:"AHA 2025 · CIMA 57806 · Murillo c.134 · OEDA 2025 · Energy Control 2026"},
+
+{id:"alcohol",g:"Depresores",n:"Alcohol",al:"Sin antídoto: tiamina y glucosa son tratamiento de soporte",a:"NO HAY",ad:"Ninguna fuente da antídoto. Sin guía oficial.",
+dest:"Coma: observación hasta recuperar la consciencia. Intoxicación leve: puede vigilarse en casa (Murillo c.150). Ojo a la hipoglucemia a las 6-36 h.",
+via:"No consta en la ficha",lleg:["Coma o agitación","Hipoglucemia, también tardía (6-36 h)","Alarma: TCE, focalidad o coma no explicado"],
+st:["Glucemia capilar a todos los pacientes con coma o agitación","Hipoglucemia: glucosa YA","Tiamina 200 mg IV cada 8 h (Wernicke, EFNS 2010), a la vez o justo después de la glucosa","Alarma: TCE, focalidad o coma no explicado: TC","Repetir la glucemia: la hipoglucemia puede aparecer a las 6-36 h","Agitación: sedar (bloque común)"],
+kill:["Hipoglucemia","Lesión craneal o coma de otra causa","Mezcla con otros depresores"],no:["Glucosa al 50 % en bolo sin diluir","No retrasar la glucosa esperando la tiamina","No mezclar la tiamina en un suero"],
+av:"Hipoglucemia: glucosa ya; la tiamina va a la vez o justo después, sin retrasarla.",
+dos:[["Glucosa","33 %: 10 mL = 3,3 g, IV lenta. 50 %: 20 mL = 10 g, siempre diluida como aditivo de una perfusión. Rescate según la glucemia (protocolo del centro). Máx. 6 mg/kg/min en el crítico (9 excepcional)."],["Tiamina","Ampolla 100 mg/1 mL. 200 mg = 2 ampollas cada 8 h, IV lenta (IM si no hay vía). No mezclar con ningún otro producto ni fluido."]],
+src:"CIMA 17464, 74778, 74781 · Murillo c.150 · Harrison · EFNS 2010 · Schabelman 2012"},
+
+{id:"cannabis",g:"Cannabis y sintéticos",n:"Cannabis e hiperémesis",al:"Marihuana, hachís, aceites, «porros». Los comestibles dan cuadros más graves",a:"NO HAY",ad:"Sin guía oficial para la intoxicación aguda. Hiperémesis: lo único que cura es dejar el cannabis (RCEM 2023).",
+dest:"Alta con información escrita y derivación; volver si vómitos intensos ≥ 1 día.",
+via:"Fumado con tabaco (lo más habitual) o ingerido",lleg:["Hiperémesis: vómitos cíclicos + consumo de cannabis; alivio con duchas calientes; dolor abdominal","Agudo: ansiedad, pánico, taquicardia, psicosis transitoria"],
+st:["Agudo: zona tranquila, tranquilizar y observar; sedar si hace falta (bloque común)","Hiperémesis: descartar causa médica o quirúrgica; electrolitos y sueros","Metoclopramida 10 mg (2 mL de 5 mg/mL) IV lenta ≥ 3 min","Si falla: ECG y haloperidol IM 0,05 mg/kg (máx. 5 mg)","Alta: información escrita y derivación; volver si vómitos intensos ≥ 1 día"],
+kill:["Hiperémesis: puede ser mortal; frecuentes trastornos electrolíticos","Agudo (raro): SCA, crisis asmática, neumotórax o neumomediastino, elevación de transaminasas"],no:["Haloperidol con QTc largo, Parkinson o Lewy","Haloperidol con otros fármacos que alargan el QT","Carbón activado en cannabis ingerido"],
+av:"Haloperidol: contraindicado con otros fármacos que alargan el QT; ECG antes.",
+dos:[["Metoclopramida","Ampolla 2 mL = 10 mg (5 mg/mL). 2 mL sin diluir, IV lenta ≥ 3 min (o IM). Repetir hasta 3 veces/día, intervalo ≥ 6 h. Máx. 30 mg/día."],["Haloperidol IM","5 mg/mL: 0,05 mg/kg (máx. 5 mg). Volumen = mg / 5."]],
+src:"RCEM 2023 · Jiménez Murillo c.148 · Farreras 20.a · Bless 2025 · CIMA 78556, 72117, 58345, 82997"},
+
+{id:"sinteticos",g:"Cannabis y sintéticos",n:"Sintéticos y HHC",al:"«spice», «pescao», «K2», «black mamba», «blaze». Semisintéticos: HHC, HHC-O, HHCP, THCP (gominolas, caramelos, vapers)",a:"NO HAY",ad:"Sin guía oficial. Tratamiento del cuadro; el HHC tampoco tiene manejo propio.",
+dest:"No consta destino propio: tratar el cuadro. Monitor continuo por arritmias.",
+via:"Gominolas, caramelos, vapers",lleg:["Psicosis y alucinaciones, más intensas que el cannabis","Agitación, convulsiones, taquicardia, HTA, arritmias","Pista: «porros» + cribado de cannabis negativo"],
+st:["Monitor continuo; arritmias y HTA: tratar sintomáticamente","Agitación grave: sedar (bloque común)","Convulsiones: midazolam 10 mg IM (2 mL de 5 mg/mL) o diazepam 0,15-0,25 mg/kg IV","≥ 40 °C: agua helada, parar a 38,6 °C; IOT sin succinilcolina","Rabdomiólisis: hidratación IV agresiva"],
+kill:["Convulsiones o estatus","Hipertermia con rabdomiólisis e IRA","Acidosis metabólica"],no:["Betabloqueantes salvo supervisión experta","Contención prolongada sin sedar","Antitérmicos: dantroleno de rutina"],
+av:"Sospechar: clínica + «porros» + cribado de cannabis negativo. Son drogas de diseño que no salen en los test habituales.",
+dos:[["Midazolam (fuera de ficha)","Ampolla 5 mg/mL. Sin vía: 10 mg IM = 2 mL, sin esperar. Con vía: diazepam IV muy lenta (0,5-1 mL/min; ampolla 5 mg/mL); repetir a los 10-15 min. Si no cede: protocolo de estatus del centro."]],
+src:"Bless 2025 · Farreras 20.a · Harrison 22.a · AHA 2025 · ERC 2025 · OEDA 2025"},
+
+{id:"ketamina",g:"Ketamina y alucinógenos",n:"Ketamina",al:"Anestésico disociativo: para atenuar cocaína o anfetaminas, o por efectos alucinógenos. Oculta en otras drogas y en el tusi",a:"NO HAY",ad:"Tratamiento sintomático. Sin guía oficial.",
+dest:"No consta destino propio en la ficha. Depresión respiratoria: ventilación asistida; preferible la ventilación mecánica a los analépticos.",
+via:"Oculta en otras drogas y en el tusi",lleg:["Ansiedad, palpitaciones, dolor torácico, alucinaciones","Sobredosis: coma con depresión respiratoria y cardiovascular","Vómitos, sialorrea, laringoespasmo, conducta irracional"],
+st:["Lugar tranquilo, con los menos estímulos visuales y sonoros posibles","Ansiedad o agitación: benzodiacepina (fuera de ficha; ver sedación)","Clínica psicótica: neuroléptico (fuera de ficha; ver sedación)","Depresión respiratoria: ventilación asistida"],
+kill:["Coma y depresión respiratoria o cardiovascular","Laringoespasmo","Consumidor crónico: cistitis (incluso hemorrágica), lesión renal aguda, hidronefrosis"],no:["Analépticos para la depresión respiratoria"],
+av:"Puede ir oculta en otras drogas y en el tusi: el paciente puede no saberlo. El cribado de orina puede no incluir ketamina.",
+dos:[],
+src:"Farreras 20.a c.325 · CIMA 47034 · Bless 2025 · Energy Control 2025-2026"},
+
+{id:"tusi",g:"Ketamina y alucinógenos",n:"Tusi",al:"«tusi», «tusibí». Polvo rosa: sobre todo ketamina y MDMA, a veces cafeína; casi nunca cocaína",a:"NO HAY",ad:"Ninguna fuente da manejo propio: se trata el cuadro que presenta.",
+dest:"Sin serie clínica propia: se atiende por el cuadro que presenta (ficha de MDMA o de ketamina).",
+via:"Polvo rosa",lleg:["Cuadro simpaticomimético o serotoninérgico → ficha de MDMA","Cuadro disociativo, coma o depresión respiratoria → ficha de ketamina"],
+st:["Identificar el toxíndrome dominante y seguir esa ficha","Simpaticomimético o serotoninérgico → ficha de MDMA","Disociativo, coma o depresión respiratoria → ficha de ketamina","Sedación: ver «Sedar al agitado»"],
+kill:["Lo que mata: el de su cuadro dominante (ver MDMA o ketamina)"],no:[],
+av:"No tratar como cocaína por el nombre: «cocaína rosa» no describe su composición.",
+dos:[],
+src:"Energy Control 2025"},
+
+{id:"lsd",g:"Ketamina y alucinógenos",n:"LSD y setas",al:"LSD, psilocibina (algunos hongos), mescalina (peyote), DMT (ayahuasca). El «tripi» es formato secante típico del LSD",a:"NO HAY",ad:"Sin guía oficial. Solo si síndrome serotoninérgico confirmado: ciproheptadina (fuera de ficha).",
+dest:"No consta plazo propio en la ficha; tratar según la clínica.",
+via:"Oral sobre todo; también transmucosa, fumados o aspirados",lleg:["Alucinaciones, agitación extrema, pánico, paranoia","Conductas de riesgo: fuga, saltar, agresión","Taquicardia, HTA, hipertermia, midriasis"],
+st:["Sala tranquila y desescalada verbal","No basta: midazolam 1-2 mg IV (1-2 mL de 1 mg/mL); ver «Sedar al agitado»","> 40 °C: inmersión en agua helada, parar a 38,6 °C","Convulsiones: midazolam 10 mg IM (2 mL de 5 mg/mL) o diazepam 0,15-0,25 mg/kg IV","Síndrome serotoninérgico confirmado: ciproheptadina 12 mg VO, luego 2 mg cada 2 h; máx. 32 mg/24 h"],
+kill:["Hipertermia > 40 °C con rabdomiólisis e IRA","Síndrome serotoninérgico (HTA, hipertermia, convulsiones)","La conducta: muertes indirectas bien documentadas"],no:["Ondansetrón ni otros antieméticos 5-HT3","Dantroleno de rutina"],
+av:"Un «tripi» en España ha llevado nitazeno: si hay depresión respiratoria, ver opioides.",
+dos:[["Ciproheptadina (fuera de ficha)","Comprimido 4 mg, ranurado y divisible. 12 mg VO = 3 comprimidos; luego 2 mg = ½ comprimido cada 2 h. Máx. 32 mg/24 h."]],
+src:"Bless 2025 · Harrison 22.a · AHA 2025 · ERC 2025 · CIMA 35622, 63936, 72117"},
+
+{id:"nbome",g:"Ketamina y alucinógenos",n:"NBOMe y 2C-B",al:"25B-, 25C-, 25H-, 25I-, 25N- y 25iP-NBOMe; 2C-B. Lo vendido como 2C-B a veces lleva MDMA no declarada",a:"NO HAY",ad:"Sin guía oficial. Todo sintomático; síndrome serotoninérgico confirmado: ciproheptadina (fuera de ficha).",
+dest:"Sin plazo propio: adaptar a la clínica. Las 6 h del LSD no se aplican a las fenetilaminas.",
+via:"Fenetilaminas psicodélicas",lleg:["Como el LSD: alucinaciones, agitación, conductas de riesgo","NBOMe: taquicardia, HTA, más crisis que los 2C"],
+st:["Sala tranquila y desescalada verbal, como en LSD y setas","Benzodiacepina IV para la sedación y las convulsiones (fuera de ficha; ver sedación)","Mismos pasos de temperatura, convulsiones y UCI que en LSD y setas","Síndrome serotoninérgico confirmado: ciproheptadina (fuera de ficha)"],
+kill:["NBOMe: rabdomiólisis, IRA, muerte","2C-B: síndrome serotoninérgico y edema cerebral","La conducta: muertes indirectas con NBOMe y 2C-B"],no:["Ondansetrón ni antieméticos 5-HT3","Dantroleno de rutina"],
+av:"Si el 2C-B llevaba MDMA no declarada, ver también la ficha de MDMA.",
+dos:[],
+src:"Bless 2025 · Energy Control 2026 · OEDA · PMID 32174803 · AHA 2025"},
+
+{id:"poppers",g:"Poppers y gas de la risa",n:"Poppers",al:"Nitrito de amilo, butilo, isobutilo. Inhalados desde botes de 10-15 mL. Producen metahemoglobinemia",a:"AZUL DE METILENO",ad:"Si MHb > 20 % con síntomas, > 30 % sin ellos, o amenaza vital. Guía: AHA 2025.",
+dest:"No consta destino propio en la ficha. Repetir azul de metileno a la hora si hace falta; no superar 7 mg/kg acumulados.",
+via:"Inhalados desde botes de 10-15 mL",lleg:["Cianosis que no mejora con O₂","Cefalea, mareo, taquicardia, disnea, síncope"],
+st:["O₂ al 100 % con reservorio; cooximetría y monitor","MHb > 20 % con síntomas, > 30 % sin ellos o amenaza vital: azul de metileno","Azul 1-2 mg/kg = 0,2-0,4 mL/kg de 5 mg/mL, IV muy lenta en 5 min","Repetir a la hora; no superar 7 mg/kg; glucosado 5 % a 30 mL/h","Sin respuesta: G6PD, b5 reductasa, sulfohemoglobina"],
+kill:["MHb alta: confusión, arritmias, coma, muerte","Nitritos volátiles: hasta 90 % de MHb, con muertes","Con sildenafilo o tadalafilo: hipotensión grave"],no:["Azul de metileno en suero fisiológico","Azul en déficit de G6PD","Azul con ISRS, IRSN o IMAO sin vigilar 4 h","Fiarse de la pulsioximetría"],
+av:"Dos azules en el carro: 5 mg/mL (ficha) y 10 mg/mL (Murillo, Mensa): rotular mg/mL. Tras poppers: cooximetría.",
+dos:[["Azul de metileno 5 mg/mL (fuera de ficha en la dosis)","Ampolla 10 mL = 50 mg. 1-2 mg/kg = 0,2-0,4 mL/kg. Sin diluir, o en 50 mL de glucosa 5 %; nunca en SSF. IV muy lenta en 5 min."]],
+src:"AHA 2025 · CIMA 111682002 · Twine 2026 · Cefalu 2020 · Farreras 20.a · Jiménez Murillo c.148 · CIMA 80061"},
+
+{id:"oxido",g:"Poppers y gas de la risa",n:"Óxido nitroso",al:"«Gas de la risa», «whippits», «chargers», «nangs». Inhalado desde un globo que se llena con la cápsula",a:"NO HAY",ad:"La hidroxocobalamina es tratamiento, no antídoto. Fuera de ficha.",
+dest:"Alta con cita, forma de recibir las inyecciones y derivación a adicciones.",
+via:"Inhalado desde un globo",lleg:["Parestesias y ataxia de la marcha","Consumo regular de semanas o meses","Retención urinaria, disfunción eréctil"],
+st:["Preguntar expresamente por el óxido nitroso","Extraer homocisteína (en hielo) y MMA antes de tratar","Hidroxocobalamina 1 mg IM ya, sin esperar resultados","Luego 1 mg IM cada 2 días durante al menos 2 semanas (L-X-V); dejar el N₂O","Alta con cita, forma de recibir las inyecciones y adicciones"],
+kill:["Hipoxia y asfixia: arritmias, convulsiones, muerte","Barotrauma: neumotórax, neumomediastino"],no:["Esperar a los resultados para tratar","Descartar por B12 o hemograma normales"],
+av:"B12, Hb y VCM normales no descartan. Mieloneuropatía: solo el 10,5 % queda sin síntomas.",
+dos:[["Hidroxocobalamina (fuera de ficha)","Ampolla 1 mL = 1 mg (1 mg/mL). 1 mL sin diluir, solo IM. 1 mg cuanto antes; luego 1 mg cada 2 días al menos 2 semanas (6 dosis); reevaluar."]],
+src:"ABN 2023 · RCEM 2023 · Mair 2023 · CIMA 88743 · OEDA 2025"},
+
+{id:"chemsex",g:"Chemsex",n:"Chemsex",al:"Drogas para tener relaciones sexuales durante horas o días, entre hombres gais, bisexuales y otros HSH. «Slam»: uso inyectado. «Doblar»: sobredosis",a:"NO HAY",ad:"Cada sustancia, según su ficha (el documento no trata antídotos). Sin guía oficial de Urgencias: documento técnico del Ministerio, 2020.",
+dest:"Valorar ingreso en UCI, Medicina Interna o Psiquiatría según gravedad; al alta, VIH y adicciones.",
+via:"Uso intencionado durante horas o días",lleg:["Comas o intoxicación grave por varias sustancias","Agitación, psicosis, delirium o conducta de riesgo","Lesiones anales, de pene o por inyección"],
+st:["Abordaje sindrómico: tratar cada droga según su ficha (GHB, catinonas, ketamina...)","Coma: ficha de GHB/GBL; si puede haber opiáceo, bloque de naloxona","Agitación o psicosis: bloque de sedación; interconsulta a Psiquiatría","Preguntar sin juzgar: sustancias, prácticas de riesgo, abuso sexual","Pedir PPE si exposición en las últimas 72 h; revisar lesiones anales, de pene o por inyección","Valorar ingreso en UCI, Medicina Interna o Psiquiatría; al alta, VIH y adicciones"],
+kill:["GHB con alcohol o benzodiacepinas: depresión respiratoria, coma y muerte","Poppers con sildenafilo, tadalafilo, vardenafilo o avanafilo: hipotensión grave"],no:["Juzgar en la anamnesis","Un cribado de tóxicos negativo no descarta drogas nuevas","Suponer una sola sustancia"],
+av:"Casi nunca es una sola sustancia: abordaje sindrómico y manejo según la ficha de cada droga.",
+dos:[],
+src:"Ministerio de Sanidad 2020"}
+];
+var PDF_URL="Drogas_de_abuso_en_Urgencias_MQ.pdf";
+var CONT_TXT="Nunca contención física sin sedación";
+var app=document.getElementById("app"),q=document.getElementById("q");
+var CREDIT_HTML='Guía de guardia · Drogas de abuso en Urgencias · <a href="'+PDF_URL+'" target="_blank" rel="noopener">Aula MedQuickUrg</a> (aula.medquickurg.com). Hoja de referencia para médicos de Urgencias: no sustituye al protocolo de tu centro. Dosis de preparación según la ficha técnica española (CIMA/AEMPS); estrategia según las guías citadas en cada ficha (fuentes completas: págs. 17-18 de la guía).';
+function esc(s){return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;")}
+function num(s){return parseFloat(String(s).replace(",","."))}
+function fmt(x){return (Math.round(x*10)/10).toString().replace(".",",")}
+function calc(x,y,u,c){
+ var cap=c===null?Infinity:c;
+ var lo=Math.min(W*x,cap), hi=y===null?null:Math.min(W*y,cap);
+ return "("+fmt(lo)+(hi===null?"":"–"+fmt(hi))+" "+u+")";
+}
+function ann(t){
+ return esc(t).replace(/(\d+(?:,\d+)?)(?:\s?-\s?(\d+(?:,\d+)?))?\s?(mg|mL)\/kg(?!\/)(\s*\(máx\. ?\d+(?:,\d+)?\s?mg\))?/g,function(m,a,b,u,cap){
+  var x=num(a),y=b?num(b):null,c=cap?num(cap.match(/\d+(?:,\d+)?/)[0]):null;
+  return m+' <span class="wc" data-a="'+x+'" data-b="'+(y===null?"":y)+'" data-u="'+u+'" data-c="'+(c===null?"":c)+'">'+calc(x,y,u,c)+'</span>';
+ });
+}
+function ul(a){return "<ul>"+a.map(function(x){return "<li>"+esc(x)+"</li>"}).join("")+"</ul>"}
+function ol(a){return "<ol>"+a.map(function(x){return "<li>"+ann(x)+"</li>"}).join("")+"</ol>"}
+function box(cls,title,html,id){return '<div class="box '+cls+'"'+(id?' id="'+id+'"':'')+'><h3>'+title+'</h3>'+html+'</div>'}
+function norm(s){return s.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"")}
+function avisoC(){return '<div class="aviso-c">'+CONT_TXT+'</div>'}
+function list(){
+ var t=norm(q.value.trim()),h='<div class="legend"><span class="pill ok">Verde: hay antídoto</span><span class="pill no">Gris: no hay antídoto</span></div>'+avisoC(),last="",n=0;
+ var ORD=D.filter(function(x){return x.g==='Bloques comunes'}).concat(D.filter(function(x){return x.g!=='Bloques comunes'}));
+ ORD.forEach(function(d){
+  var hay=norm([d.n,d.al,d.a,d.g,d.ad].join(" "));
+  if(t&&hay.indexOf(t)<0)return;n++;
+  if(d.g!==last){h+='<div class="grp">'+d.g+'</div>';last=d.g}
+  var ok=d.a!=="NO HAY";
+  h+='<button class="card '+(ok?"ok":"")+'" data-id="'+d.id+'"><div class="row"><b>'+esc(d.n)+'</b><span class="pill '+(ok?"ok":"no")+'">'+(ok?esc(d.a):"Sin antídoto")+'</span></div><div class="d">'+esc(d.dest)+'</div></button>';
+ });
+ if(!n)h+='<p>Sin resultados. Prueba con otro nombre o con la clase (opioide, estimulante).</p>';
+ h+='<footer class="credit">'+CREDIT_HTML+'</footer>';
+ app.innerHTML=h;
+}
+var PILL='<svg viewBox="0 0 24 24" width="26" height="26" aria-hidden="true"><g transform="rotate(-45 12 12)"><rect x="2.5" y="8" width="19" height="8" rx="4" fill="none" stroke="currentColor" stroke-width="2"/><line x1="12" y1="8" x2="12" y2="16" stroke="currentColor" stroke-width="2"/></g></svg>';
+function sheet(d){
+ var no=d.a==="NO HAY",h='';
+ h+='<div class="hd"><button class="back" data-id="">‹ Todas las fichas</button>';
+ h+='<div class="tools"><div id="wbox" class="wbox" tabindex="0" role="spinbutton" aria-label="Peso en kg" aria-valuemin="30" aria-valuemax="200" aria-valuenow="'+W+'"><span class="wl">Peso ↕</span><span class="wv"><span id="wv">'+W+'</span> kg</span></div>';
+ h+='<button id="pbtn" class="pbtn" aria-label="Ir al tratamiento">'+PILL+'</button></div></div>';
+ h+='<div class="ttl"><h2>'+esc(d.n)+'</h2><div class="alias">'+esc(d.al)+'</div></div>';
+ h+='<div class="antrow"><span class="pill '+(no?"no":"ok")+'">'+(no?"Sin antídoto":"Antídoto: "+esc(d.a))+'</span></div>';
+ if(/contenci/i.test(d.no.join(" ")))h+=avisoC();
+ h+=box("first","Cómo llega",'<p class="via"><b>Vía habitual:</b> '+esc(d.via)+'</p>'+ul(d.lleg));
+ h+=box("plain","Qué hago ahora",ol(d.st),"pasos");
+ h+=box("anti"+(no?" none":""),"Antídoto","<p>"+esc(d.ad)+"</p>");
+ h+=box("plan","Destino y plan","<p><b>"+esc(d.dest)+"</b></p>");
+ if(d.kill.length)h+=box("kill","Lo que mata",ul(d.kill));
+ if(d.no.length)h+=box("nono","No hacer",ul(d.no));
+ if(d.av)h+=box("warn","Aviso","<p>"+esc(d.av)+"</p>");
+ if(d.dos.length)h+='<details id="tto"><summary>Tratamiento y dosis ('+d.dos.length+')</summary><div>'+d.dos.map(function(x){return '<div class="dose"><b>'+esc(x[0])+'</b><br>'+ann(x[1])+'</div>'}).join("")+'</div></details>';
+ h+='<div class="endnav"><button class="back" data-id="">‹ Volver al inicio</button></div>';
+ h+='<div class="src">Fuentes: '+esc(d.src)+'</div>';
+ h+='<footer class="credit">'+CREDIT_HTML+'</footer>';
+ app.innerHTML=h;window.scrollTo(0,0);
+ bindW();
+}
+function setW(v){
+ W=Math.max(30,Math.min(200,Math.round(v)));
+ var wv=document.getElementById("wv"),wb=document.getElementById("wbox");
+ if(!wv)return;
+ wv.textContent=W;wb.setAttribute("aria-valuenow",W);
+ document.querySelectorAll(".wc").forEach(function(el){
+  var x=+el.dataset.a,y=el.dataset.b===""?null:+el.dataset.b,c=el.dataset.c===""?null:+el.dataset.c;
+  el.textContent=calc(x,y,el.dataset.u,c);
+ });
+}
+function bindW(){
+ var el=document.getElementById("wbox");if(!el)return;
+ var y0=0,w0=W,drag=false;
+ el.onpointerdown=function(e){drag=true;y0=e.clientY;w0=W;el.setPointerCapture(e.pointerId)};
+ el.onpointermove=function(e){if(drag)setW(w0+(y0-e.clientY)/10)};
+ el.onpointerup=el.onpointercancel=function(){drag=false};
+ el.onkeydown=function(e){if(e.key==="ArrowUp"){setW(W+1);e.preventDefault()}if(e.key==="ArrowDown"){setW(W-1);e.preventDefault()}};
+ el.onwheel=function(e){e.preventDefault();setW(W+(e.deltaY<0?1:-1))};
+}
+function route(){
+ var id=location.hash.slice(1),d=D.filter(function(x){return x.id===id})[0];
+ if(d){q.value="";sheet(d)}else list();
+}
+app.addEventListener("click",function(e){
+ var p=e.target.closest("#pbtn");
+ if(p){var t=document.getElementById("tto");var dest=t||document.getElementById("pasos");if(t)t.open=true;setTimeout(function(){var s=t?t.querySelector("summary"):dest;var y=s.getBoundingClientRect().top+window.pageYOffset-20;window.scrollTo({top:y,behavior:"smooth"})},60);return}
+ var b=e.target.closest("[data-id]");if(!b)return;var id=b.getAttribute("data-id");
+ if(id)location.hash=id;else{history.pushState(null,"",location.pathname+location.search);route()}
+});
+q.addEventListener("input",function(){if(location.hash)history.pushState(null,"",location.pathname+location.search);list()});
+window.addEventListener("hashchange",route);
+route();
+</script>
+</body>
+</html>
